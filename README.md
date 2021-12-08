@@ -1,2 +1,2 @@
 # python-fluent-results
-A port of .Net/C# FluentResults
+Propagate errors and data nicely with a uniform interface in your python project
