@@ -23,3 +23,4 @@ class ResultBase(ABC):
     @property
     def is_success(self):
         return not self.is_failed
+
