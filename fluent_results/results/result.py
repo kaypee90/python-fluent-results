@@ -8,4 +8,13 @@ class Result(ResultBase):
     """
     Concrete class for holding results details
     """
-    pass
+    @classmethod
+    def Ok(cls, message=None, **kwargs):
+        """
+        Handles successful data
+        """
+        if message:
+            assert isinstance(message, str)
+            cls.Successes.append(message)
+        return cls
+
