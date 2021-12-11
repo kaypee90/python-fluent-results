@@ -8,18 +8,23 @@ class ResultBase(ABC):
     """
     Base class for all results
     """
-    Errors = []
+    def __init__(self, is_success, data=None, message=None):  
+        self.errors = []
+        self.successes = []
+        self.reasons = []
+        self.value = data
+        self.is_success = is_success
 
-    Successes = []
+        if message and not isinstance(message, str):
+            raise TypeError("message must be a string")
 
-    Reasons = []
+        if is_success and message:
+            self.successes.append(message)
 
-    data = None
+        if not is_success and message:
+            self.errors.append(message)
 
     @property
     def is_failed(self):
-        return self.Errors.count() > 0
+        return not self.is_success
 
-    @property
-    def is_success(self):
-        return not self.is_failed
