@@ -32,4 +32,17 @@ def test_result_fail_with_valid_data():
     assert not result.is_success
     assert result.is_failed
 
+def test_result_base_with_error_using_invalid_data_should_thow_an_error():
+    with pytest.raises(TypeError):
+        result = Result.ok("Valid Data One")
+        result.with_error("")
 
+def test_result_base_with_error_using_valid_data_should_succeed():
+    result = Result.fail("Error occured with Data One")
+    output = result.with_error("The Process failed")
+    
+    assert len(result.successes) == 0
+    assert len(result.errors) == 2
+    assert len(result.reasons) == 0
+    assert result.is_failed
+    assert isinstance(output, Result)
