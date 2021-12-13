@@ -15,7 +15,7 @@ class ResultBase(ABC):
         self.value = data
         self.is_success = is_success
 
-        ResultBase.validate_message(message)
+        ResultBase._validate_message(message)
 
         if is_success and message:
             self.successes.append(message)
@@ -37,12 +37,26 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result bbase
         """
-        ResultBase.validate_message(error_message, True)
+        ResultBase._validate_message(error_message, True)
         self.errors.append(error_message)
         return self
 
+    def with_success(self, success_message):
+        """
+        takes in a success message and adds it to
+        the list of success messages.
+
+        params:
+            success_message (str): message to be added to successes
+        returns
+            ResultBase: an instance of result bbase
+        """
+        ResultBase._validate_message(success_message, True)
+        self.successes.append(success_message)
+        return self
+
     @staticmethod
-    def validate_message(message, check_for_none=False):
+    def _validate_message(message, check_for_none=False):
         """
         validates if a message is not null and it is of
         type string

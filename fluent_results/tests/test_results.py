@@ -34,15 +34,33 @@ def test_result_fail_with_valid_data():
 
 def test_result_base_with_error_using_invalid_data_should_thow_an_error():
     with pytest.raises(TypeError):
-        result = Result.ok("Valid Data One")
+        result = Result.fail("Valid Data One")
         result.with_error("")
 
 def test_result_base_with_error_using_valid_data_should_succeed():
     result = Result.fail("Error occured with Data One")
-    output = result.with_error("The Process failed")
+    result.with_error("The Process failed")
+    output = result.with_error("The Process failed again")
     
     assert len(result.successes) == 0
-    assert len(result.errors) == 2
+    assert len(result.errors) == 3
     assert len(result.reasons) == 0
     assert result.is_failed
+    assert isinstance(output, Result)
+
+def test_result_base_with_success_using_invalid_data_should_thow_an_error():
+    with pytest.raises(TypeError):
+        result = Result.ok("Valid Data Two")
+        result.with_success("")
+
+def test_result_base_with_success_using_valid_data_should_succeed():
+    result = Result.ok({"data": "sample test data"}, "Process occured with Data Two")
+    result.with_success("The Process succeeded")
+    result.with_success("The Process succeeded again")
+    output = result.with_success("The Process succeeded again and again")
+    
+    assert len(result.successes) == 4
+    assert len(result.errors) == 0
+    assert len(result.reasons) == 0
+    assert result.is_success
     assert isinstance(output, Result)
