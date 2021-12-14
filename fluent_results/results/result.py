@@ -11,7 +11,7 @@ class Result(ResultBase):
     """
 
     def __init__(self, is_success, data, message):
-        super(Result, self).__init__(is_success, data, message)
+        super().__init__(is_success, data, message)
 
     @classmethod
     def ok(cls, data=None, message=None):
