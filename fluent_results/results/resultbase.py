@@ -4,11 +4,13 @@ Author kaypee90
 
 from abc import ABC
 
+
 class ResultBase(ABC):
     """
     Base class for all results
     """
-    def __init__(self, is_success, data=None, message=None):  
+
+    def __init__(self, is_success, data=None, message=None):
         self.errors = []
         self.successes = []
         self.reasons = []
@@ -70,4 +72,3 @@ class ResultBase(ABC):
 
         if check_for_none and not message:
             raise TypeError("message must not be empty!")
-
