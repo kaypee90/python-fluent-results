@@ -86,3 +86,14 @@ class ResultBase(ABC):
 
         if check_for_none and not message:
             raise TypeError("message must not be empty!")
+
+    def __str__(self):
+        """
+        Get string representation of result object
+        """
+        if any(self.reasons):
+            reasons = "; ".join(self.reasons)
+            reasons_string = f", Reasons='{reasons}'"
+            return f"Result: IsSuccess='{self.is_success}'{reasons_string}"
+
+        return ""
