@@ -27,6 +27,9 @@ class ResultBase(ABC):
 
     @property
     def is_failed(self):
+        """
+        Checks if the result is a failure
+        """
         return not self.is_success
 
     def with_error(self, error_message):

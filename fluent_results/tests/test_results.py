@@ -1,8 +1,8 @@
+"""
+Author kaypee90
+"""
 import pytest
 
-"""
-Test case for results.py
-"""
 from results.result import Result
 
 
