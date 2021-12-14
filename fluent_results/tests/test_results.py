@@ -103,3 +103,18 @@ def test_result_base_with_reason_using_valid_data_should_succeed():
     assert len(result.reasons) == 3
     assert result.is_success
     assert isinstance(output, Result)
+
+
+def test_string_representation_of_result_with_no_reasons_should_retun_empty_string():
+    result = Result.ok({"data": "sample test data one"}, "Process occured with Data THREE")
+    
+    assert len(result.reasons) == 0
+    assert str(result) == ""
+
+def test_string_representation_of_result_with_reasons_should_retun_valid_string_format():
+    result = Result.ok({"data": "sample test data one"}, "Process occured with Data THREE")
+    result.with_reason("With reason one")
+    result.with_reason("With reason two")
+
+    assert len(result.reasons) == 2
+    assert str(result) == "Result: IsSuccess='True', Reasons='With reason one; With reason two'"
