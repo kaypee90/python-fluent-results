@@ -57,6 +57,20 @@ class ResultBase(ABC):
         self.successes.append(success_message)
         return self
 
+    def with_reason(self, reason):
+        """
+        takes in a reason and adds it to
+        the list of reasons.
+
+        params:
+            reason (str): message to be added to successes
+        returns
+            ResultBase: an instance of result bbase
+        """
+        ResultBase._validate_message(reason, True)
+        self.reasons.append(reason)
+        return self
+
     @staticmethod
     def _validate_message(message, check_for_none=False):
         """

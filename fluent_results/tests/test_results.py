@@ -72,3 +72,21 @@ def test_result_base_with_success_using_valid_data_should_succeed():
     assert len(result.reasons) == 0
     assert result.is_success
     assert isinstance(output, Result)
+
+
+def test_result_base_with_reason_using_invalid_data_should_thow_an_error():
+    with pytest.raises(TypeError):
+        result = Result.ok("Valid Data Three")
+        result.with_reason("")
+
+def test_result_base_with_reason_using_valid_data_should_succeed():
+    result = Result.ok({"data": "sample test data one"}, "Process occured with Data THREE")
+    result.with_reason("With reason one")
+    result.with_reason("With reason two")
+    output = result.with_reason("With reason three")
+
+    assert len(result.successes) == 1
+    assert len(result.errors) == 0
+    assert len(result.reasons) == 3
+    assert result.is_success
+    assert isinstance(output, Result)
