@@ -94,7 +94,6 @@ class ResultBase(ABC):
         if any(self.reasons):
             reasons = "; ".join(self.reasons)
             reasons_string = f", Reasons='{reasons}'"
-            return f"Result: IsSuccess='{self.is_success}'{reasons_string}" 
+            return f"Result: IsSuccess='{self.is_success}'{reasons_string}"
 
         return ""
-
