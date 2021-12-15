@@ -90,6 +90,19 @@ class ResultBase(ABC):
         if check_for_none and not message:
             raise TypeError("message must not be empty!")
 
+    def convert_to_dict(self):
+        """
+        Converts result object to a dict that can be searilized
+        to JSON
+        """
+        return  {
+            "is_success": self.is_success,
+            "value": self.value,
+            "successes": self.successes,
+            "errors": self.errors,
+            "reasons": self.reasons
+        }
+
     def __str__(self):
         """
         Get string representation of result object
