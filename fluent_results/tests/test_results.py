@@ -131,3 +131,19 @@ def test_string_representation_of_result_with_reasons_should_retun_valid_string_
         str(result)
         == "Result: IsSuccess='True', Reasons='With reason one; With reason two'"
     )
+
+def test_convert_to_dict_must_return_a_valid_dictionary():
+    result = Result.ok(
+        {"data": "sample test data six"}, "Process occured with Data five"
+    )
+    result.with_reason("With reason eight")
+
+    output = result.convert_to_dict()
+
+    assert output == {
+        "is_success": True,
+        "value": {"data": "sample test data six"},
+        "successes": ["Process occured with Data five"],
+        "errors": [],
+        "reasons": ["With reason eight"]
+    }
