@@ -4,6 +4,7 @@ Author kaypee90
 import pytest
 
 from results.result import Result
+from results.custom_exceptions import MessageNotStringError, MessageNotEmptyError
 
 
 def test_result_ok_with_valid_data():
@@ -20,7 +21,7 @@ def test_result_ok_with_valid_data():
 
 
 def test_result_ok_with_invalid_data():
-    with pytest.raises(TypeError):
+    with pytest.raises(MessageNotStringError):
         Result.ok(["Somthing"], 99.8)
 
 
@@ -38,7 +39,7 @@ def test_result_fail_with_valid_data():
 
 
 def test_result_base_with_error_using_invalid_data_should_thow_an_error():
-    with pytest.raises(TypeError):
+    with pytest.raises(MessageNotEmptyError):
         result = Result.fail("Valid Data One")
         result.with_error("")
 
@@ -56,7 +57,7 @@ def test_result_base_with_error_using_valid_data_should_succeed():
 
 
 def test_result_base_with_error_using_invalid_data_should_thow_an_error():
-    with pytest.raises(TypeError):
+    with pytest.raises(MessageNotEmptyError):
         result = Result.fail("Valid Data One")
         result.with_error("")
 
@@ -74,7 +75,7 @@ def test_result_base_with_error_using_valid_data_should_succeed():
 
 
 def test_result_base_with_success_using_invalid_data_should_thow_an_error():
-    with pytest.raises(TypeError):
+    with pytest.raises(MessageNotEmptyError):
         result = Result.ok("Valid Data Two")
         result.with_success("")
 
@@ -92,7 +93,7 @@ def test_result_base_with_success_using_valid_data_should_succeed():
 
 
 def test_result_base_with_reason_using_invalid_data_should_thow_an_error():
-    with pytest.raises(TypeError):
+    with pytest.raises(MessageNotEmptyError):
         result = Result.ok("Valid Data Three")
         result.with_reason("")
 
@@ -132,6 +133,7 @@ def test_string_representation_of_result_with_reasons_should_retun_valid_string_
         == "Result: IsSuccess='True', Reasons='With reason one; With reason two'"
     )
 
+
 def test_convert_to_dict_must_return_a_valid_dictionary():
     result = Result.ok(
         {"data": "sample test data six"}, "Process occured with Data five"
@@ -145,5 +147,5 @@ def test_convert_to_dict_must_return_a_valid_dictionary():
         "value": {"data": "sample test data six"},
         "successes": ["Process occured with Data five"],
         "errors": [],
-        "reasons": ["With reason eight"]
+        "reasons": ["With reason eight"],
     }
