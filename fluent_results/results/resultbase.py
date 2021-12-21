@@ -3,6 +3,7 @@ Author kaypee90
 """
 
 from abc import ABC
+from results.custom_exceptions import MessageNotStringError, MessageNotEmptyError
 
 
 class ResultBase(ABC):
@@ -85,22 +86,22 @@ class ResultBase(ABC):
             check_for_none (bool): validate if message is none or emtpy
         """
         if message and not isinstance(message, str):
-            raise TypeError("message must be a string")
+            raise MessageNotStringError("message must be a string")
 
         if check_for_none and not message:
-            raise TypeError("message must not be empty!")
+            raise MessageNotEmptyError("message must not be empty!")
 
     def convert_to_dict(self):
         """
         Converts result object to a dict that can be searilized
         to JSON
         """
-        return  {
+        return {
             "is_success": self.is_success,
             "value": self.value,
             "successes": self.successes,
             "errors": self.errors,
-            "reasons": self.reasons
+            "reasons": self.reasons,
         }
 
     def __str__(self):
