@@ -41,10 +41,23 @@ class ResultBase(ABC):
         params:
             error_message (str): message to be added
         returns
-            ResultBase: an instance of result bbase
+            ResultBase: an instance of result base
         """
         ResultBase._validate_message(error_message, True)
         self.errors.append(error_message)
+        return self
+
+    def with_errors(self, messages):
+        """
+        takes in a list of error messages and adds it to
+        existing error message list.
+
+        params:
+            messages (list): message to be added to errors
+        returns
+            ResultBase: an instance of result base
+        """
+        self.errors.extend(messages)
         return self
 
     def with_success(self, success_message):
@@ -55,10 +68,23 @@ class ResultBase(ABC):
         params:
             success_message (str): message to be added to successes
         returns
-            ResultBase: an instance of result bbase
+            ResultBase: an instance of result base
         """
         ResultBase._validate_message(success_message, True)
         self.successes.append(success_message)
+        return self
+
+    def with_successes(self, messages):
+        """
+        takes in a list of success messages and adds it to
+        existing success message list.
+
+        params:
+            messages (list): message to be added to successes
+        returns
+            ResultBase: an instance of result base
+        """
+        self.successes.extend(messages)
         return self
 
     def with_reason(self, reason):
@@ -67,13 +93,39 @@ class ResultBase(ABC):
         the list of reasons.
 
         params:
-            reason (str): message to be added to successes
+            reason (str): message to be added to reasons
         returns
-            ResultBase: an instance of result bbase
+            ResultBase: an instance of result base
         """
         ResultBase._validate_message(reason, True)
         self.reasons.append(reason)
         return self
+
+    def with_reasons(self, reasons):
+        """
+        takes in a list of reasons and adds it to
+        existing reason list.
+
+        params:
+            reasons (list): message to be added to reasons
+        returns
+            ResultBase: an instance of result base
+        """
+        self.reasons.extend(reasons)
+        return self
+
+    def convert_to_dict(self):
+        """
+        Converts result object to a dict that can be searilized
+        to JSON
+        """
+        return {
+            "is_success": self.is_success,
+            "value": self.value,
+            "successes": self.successes,
+            "errors": self.errors,
+            "reasons": self.reasons,
+        }
 
     @staticmethod
     def _validate_message(message, check_for_none=False):
@@ -90,19 +142,6 @@ class ResultBase(ABC):
 
         if check_for_none and not message:
             raise MessageNotEmptyError("message must not be empty!")
-
-    def convert_to_dict(self):
-        """
-        Converts result object to a dict that can be searilized
-        to JSON
-        """
-        return {
-            "is_success": self.is_success,
-            "value": self.value,
-            "successes": self.successes,
-            "errors": self.errors,
-            "reasons": self.reasons,
-        }
 
     def __str__(self):
         """
