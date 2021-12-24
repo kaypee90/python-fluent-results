@@ -33,19 +33,19 @@ def test_result_fail_with_valid_data():
     assert len(result.errors) == 1
     assert len(result.reasons) == 0
     assert result.errors[0] == "Process failed"
-    assert result.value == None
+    assert not result.value
     assert not result.is_success
     assert result.is_failed
 
 
-def test_result_base_with_error_using_invalid_data_should_thow_an_error():
+def test_result_base_with_error_using_empty_data_should_throw_an_error():
     with pytest.raises(MessageNotEmptyError):
         result = Result.fail("Valid Data One")
         result.with_error("")
 
 
 def test_result_base_with_error_using_valid_data_should_succeed():
-    result = Result.fail("Error occured with Data One")
+    result = Result.fail("Error occured with Data 1")
     result.with_error("The Process failed")
     output = result.with_error("The Process failed again")
 
@@ -56,25 +56,13 @@ def test_result_base_with_error_using_valid_data_should_succeed():
     assert isinstance(output, Result)
 
 
-def test_result_base_with_error_using_invalid_data_should_thow_an_error():
+def test_result_base_with_error_using_empty_message_should_throw_an_error():
     with pytest.raises(MessageNotEmptyError):
         result = Result.fail("Valid Data One")
         result.with_error("")
 
 
-def test_result_base_with_error_using_valid_data_should_succeed():
-    result = Result.fail("Error occured with Data One")
-    result.with_error("The Process failed")
-    output = result.with_error("The Process failed again")
-
-    assert len(result.successes) == 0
-    assert len(result.errors) == 3
-    assert len(result.reasons) == 0
-    assert result.is_failed
-    assert isinstance(output, Result)
-
-
-def test_result_base_with_success_using_invalid_data_should_thow_an_error():
+def test_result_base_with_success_using_invalid_data_should_throw_an_error():
     with pytest.raises(MessageNotEmptyError):
         result = Result.ok("Valid Data Two")
         result.with_success("")
@@ -92,7 +80,7 @@ def test_result_base_with_success_using_valid_data_should_succeed():
     assert isinstance(output, Result)
 
 
-def test_result_base_with_reason_using_invalid_data_should_thow_an_error():
+def test_result_base_with_reason_using_invalid_data_should_throw_an_error():
     with pytest.raises(MessageNotEmptyError):
         result = Result.ok("Valid Data Three")
         result.with_reason("")
@@ -159,7 +147,7 @@ def test_with_reasons_with_valid_reasons_should_update_result_reasons_list():
     result.with_reasons(reasons)
 
     assert result.errors == ["Error occured with Data One"]
-    assert result.successes == []
+    assert not result.successes
     assert result.reasons == ["First reason", "Second reason", "Third reason"]
 
 
@@ -172,8 +160,8 @@ def test_with_success_with_valid_messages_should_update_result_success_list():
 
     result.with_successes(messages)
 
-    assert result.errors == []
-    assert result.reasons == []
+    assert not result.errors
+    assert not result.reasons
     assert result.successes == [
         "Process finished with Data Seven",
         "Success reason one",
@@ -189,8 +177,8 @@ def test_with_errors_with_valid_messages_should_update_result_error_list():
 
     result.with_errors(messages)
 
-    assert result.successes == []
-    assert result.reasons == []
+    assert not result.successes
+    assert not result.reasons
     assert result.errors == [
         "Process couldn't finish!",
         "Error reason one",
