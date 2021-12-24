@@ -134,7 +134,7 @@ def test_string_representation_of_result_with_reasons_should_retun_valid_string_
     )
 
 
-def test_convert_to_dict_must_return_a_valid_dictionary():
+def test_convert_to_dict_should_return_a_valid_dictionary():
     result = Result.ok(
         {"data": "sample test data six"}, "Process occured with Data five"
     )
@@ -149,3 +149,51 @@ def test_convert_to_dict_must_return_a_valid_dictionary():
         "errors": [],
         "reasons": ["With reason eight"],
     }
+
+
+def test_with_reasons_with_valid_reasons_should_update_result_reasons_list():
+    reasons = ["Second reason", "Third reason"]
+    result = Result.fail("Error occured with Data One")
+    result.with_reason("First reason")
+
+    result.with_reasons(reasons)
+
+    assert result.errors == ["Error occured with Data One"]
+    assert result.successes == []
+    assert result.reasons == ["First reason", "Second reason", "Third reason"]
+
+
+def test_with_success_with_valid_messages_should_update_result_success_list():
+    messages = ["Success reason two", "Success reason three"]
+    result = Result.ok(
+        {"data": "sample test data Five"}, "Process finished with Data Seven"
+    )
+    result.with_success("Success reason one")
+
+    result.with_successes(messages)
+
+    assert result.errors == []
+    assert result.reasons == []
+    assert result.successes == [
+        "Process finished with Data Seven",
+        "Success reason one",
+        "Success reason two",
+        "Success reason three",
+    ]
+
+
+def test_with_errors_with_valid_messages_should_update_result_error_list():
+    messages = ["Error reason two", "Error reason three"]
+    result = Result.fail("Process couldn't finish!")
+    result.with_error("Error reason one")
+
+    result.with_errors(messages)
+
+    assert result.successes == []
+    assert result.reasons == []
+    assert result.errors == [
+        "Process couldn't finish!",
+        "Error reason one",
+        "Error reason two",
+        "Error reason three",
+    ]
