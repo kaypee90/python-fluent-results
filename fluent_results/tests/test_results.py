@@ -4,7 +4,11 @@ Author kaypee90
 import pytest
 
 from results.result import Result
-from results.custom_exceptions import MessageNotStringError, MessageNotEmptyError
+from results.custom_exceptions import (
+    MessageNotStringError,
+    MessageNotEmptyError,
+    BulkMessagesTypeError,
+)
 
 
 def test_result_ok_with_valid_data():
@@ -151,7 +155,16 @@ def test_with_reasons_with_valid_reasons_should_update_result_reasons_list():
     assert result.reasons == ["First reason", "Second reason", "Third reason"]
 
 
-def test_with_success_with_valid_messages_should_update_result_success_list():
+def test_with_reasons_with_invalid_reasons_list_should_throw_an_exception():
+    reasons = [8, 9]
+    result = Result.fail("Error occured. Try Again")
+    result.with_reason("Initial reason")
+
+    with pytest.raises(BulkMessagesTypeError):
+        result.with_reasons(reasons)
+
+
+def test_with_successes_with_valid_messages_should_update_result_success_list():
     messages = ["Success reason two", "Success reason three"]
     result = Result.ok(
         {"data": "sample test data Five"}, "Process finished with Data Seven"
@@ -169,6 +182,14 @@ def test_with_success_with_valid_messages_should_update_result_success_list():
         "Success reason three",
     ]
 
+def test_with_sucesses_with_invalid_messages_list_should_throw_an_exception():
+    reasons = [2, True]
+    result = Result.ok({"data": "sample"}, "Executed successfully")
+    result.with_success("Initial reason")
+
+    with pytest.raises(BulkMessagesTypeError):
+        result.with_successes(reasons)
+
 
 def test_with_errors_with_valid_messages_should_update_result_error_list():
     messages = ["Error reason two", "Error reason three"]
@@ -184,4 +205,26 @@ def test_with_errors_with_valid_messages_should_update_result_error_list():
         "Error reason one",
         "Error reason two",
         "Error reason three",
+    ]
+
+
+def test_with_errors_with_invalid_messages_list_should_throw_an_exception():
+    reasons = [False, True]
+    result = Result.fail("Error occured. Contact Admin")
+    result.with_error("First Error Message")
+
+    with pytest.raises(BulkMessagesTypeError):
+        result.with_errors(reasons)
+
+
+def test_with_errors_with_empty_messages_list_should_not_update_errors_list():
+    reasons = []
+    result = Result.fail("Process failed. Kindly Contact Admin")
+    result.with_error("Emtpy List Error Message")
+    
+    result.with_errors(reasons)
+
+    assert result.errors == [
+        "Process failed. Kindly Contact Admin",
+        "Emtpy List Error Message",
     ]

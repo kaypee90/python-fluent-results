@@ -3,7 +3,12 @@ Author kaypee90
 """
 
 from abc import ABC
-from results.custom_exceptions import MessageNotStringError, MessageNotEmptyError
+from schema import Schema, SchemaError
+from results.custom_exceptions import (
+    MessageNotStringError,
+    MessageNotEmptyError,
+    BulkMessagesTypeError,
+)
 
 
 class ResultBase(ABC):
@@ -57,6 +62,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
+        ResultBase._validate_bulk_messages(messages)
         self.errors.extend(messages)
         return self
 
@@ -84,6 +90,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
+        ResultBase._validate_bulk_messages(messages)
         self.successes.extend(messages)
         return self
 
@@ -111,6 +118,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
+        ResultBase._validate_bulk_messages(reasons)
         self.reasons.extend(reasons)
         return self
 
@@ -142,6 +150,19 @@ class ResultBase(ABC):
 
         if check_for_none and not message:
             raise MessageNotEmptyError("message must not be empty!")
+
+    @staticmethod
+    def _validate_bulk_messages(messages):
+        """
+        validates if messages to make sure they are lists of strings
+
+        params:
+            message (list): messages to be vailidated
+        """
+        try:
+            Schema([str]).validate(messages)
+        except SchemaError:
+            raise BulkMessagesTypeError("Messages must be a list of strings")
 
     def __str__(self):
         """

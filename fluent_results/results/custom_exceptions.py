@@ -25,3 +25,17 @@ class MessageNotEmptyError(Exception):
     def __init__(self, message="message must not be empty!"):
         self.message = message
         super().__init__(self.message)
+
+
+class BulkMessagesTypeError(Exception):
+    """
+    Exception raised for errors when passed list of messages
+    is not a list of strings.
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message="messages must be a list of strings"):
+        self.message = message
+        super().__init__(self.message)
