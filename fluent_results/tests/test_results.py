@@ -215,3 +215,16 @@ def test_with_errors_with_invalid_messages_list_should_throw_an_exception():
 
     with pytest.raises(BulkMessagesTypeError):
         result.with_errors(reasons)
+
+
+def test_with_errors_with_empty_messages_list_should_not_update_errors_list():
+    reasons = []
+    result = Result.fail("Process failed. Kindly Contact Admin")
+    result.with_error("Emtpy List Error Message")
+    
+    result.with_errors(reasons)
+
+    assert result.errors == [
+        "Process failed. Kindly Contact Admin",
+        "Emtpy List Error Message",
+    ]
