@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="Python Fluent Results",
+    name="python-fluent-results",
     url="https://github.com/kaypee90/python-fluent-results",
     author="kaypee90",
     author_email="kaypee90@yahoo.com",
