@@ -2,7 +2,7 @@
 Author kaypee90
 """
 
-from .resultbase import ResultBase
+from fluent_results.results.result_base import ResultBase
 
 
 class Result(ResultBase):

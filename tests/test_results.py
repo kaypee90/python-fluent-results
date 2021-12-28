@@ -3,8 +3,8 @@ Author kaypee90
 """
 import pytest
 
-from results.result import Result
-from results.custom_exceptions import (
+from fluent_results.results.result import Result
+from fluent_results.results.custom_exceptions import (
     MessageNotStringError,
     MessageNotEmptyError,
     BulkMessagesTypeError,
