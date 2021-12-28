@@ -4,7 +4,7 @@ Author kaypee90
 
 from abc import ABC
 from schema import Schema, SchemaError
-from results.custom_exceptions import (
+from fluent_results.results.custom_exceptions import (
     MessageNotStringError,
     MessageNotEmptyError,
     BulkMessagesTypeError,
