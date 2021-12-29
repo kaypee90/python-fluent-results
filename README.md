@@ -12,19 +12,19 @@ Propagate errors and data nicely with a uniform interface in your python project
 
 ==============================
 
-* Returning a success and failure response
+* Returning a success or failure response
 ```
 from fluent_results.results import Result
 
 def add_two_integers(x, y):
     if not isinstance(x, int) or isinstance(y, int):
-        return Result.fail("Both arguments must be integers")
+        return Result.fail("Both arguments must be integers") # Returns a failure result
     
     total = x + y
-    return Result.ok(total)
+    return Result.ok(total) # Returns a success response
 ```
 
-* Adding additional information to results as reasons
+* Adding extra information to results as reasons
 ```
 from fluent_results.results import Result
 
@@ -36,7 +36,7 @@ def add_two_integers(x, y):
     
     total = x + y
     r = Result.ok(total, "Numbers added successfully!")
-    r.with_reason("Both arguments were integers")
+    r.with_reason("Both arguments were integers") # Adds reasons to response
     return r
 ```
 
@@ -71,7 +71,7 @@ def validate_person(person):
 from fluent_results.results import Result
 
 r = Result.ok({"data":"Sample data"})
-print(r.convert_to_dict())
+print(r.convert_to_dict()) # converts result to a dictionary
 ```
 
 * Access response return in Result object
