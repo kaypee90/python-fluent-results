@@ -182,6 +182,7 @@ def test_with_successes_with_valid_messages_should_update_result_success_list():
         "Success reason three",
     ]
 
+
 def test_with_sucesses_with_invalid_messages_list_should_throw_an_exception():
     reasons = [2, True]
     result = Result.ok({"data": "sample"}, "Executed successfully")
@@ -221,7 +222,7 @@ def test_with_errors_with_empty_messages_list_should_not_update_errors_list():
     reasons = []
     result = Result.fail("Process failed. Kindly Contact Admin")
     result.with_error("Emtpy List Error Message")
-    
+
     result.with_errors(reasons)
 
     assert result.errors == [

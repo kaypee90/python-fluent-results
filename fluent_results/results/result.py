@@ -10,9 +10,6 @@ class Result(ResultBase):
     Concrete class for holding results details
     """
 
-    def __init__(self, is_success, data, message):
-        super().__init__(is_success, data, message)
-
     @classmethod
     def ok(cls, data=None, message=None):
         """
