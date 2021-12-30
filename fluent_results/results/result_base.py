@@ -161,8 +161,10 @@ class ResultBase(ABC):
         """
         try:
             Schema([str]).validate(messages)
-        except SchemaError:
-            raise BulkMessagesTypeError("Messages must be a list of strings")
+        except SchemaError as schema_error:
+            raise BulkMessagesTypeError(
+                "Messages must be a list of strings"
+            ) from schema_error
 
     def __str__(self):
         """
