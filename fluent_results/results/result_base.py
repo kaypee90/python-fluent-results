@@ -170,9 +170,20 @@ class ResultBase(ABC):
         """
         Get string representation of result object
         """
+        messages = [f"Result: IsSuccess='{self.is_success}' "]
         if any(self.reasons):
             reasons = "; ".join(self.reasons)
             reasons_string = f", Reasons='{reasons}'"
-            return f"Result: IsSuccess='{self.is_success}'{reasons_string}"
+            messages.append(reasons_string)
 
-        return ""
+        if any(self.successes):
+            successes = "; ".join(self.successes)
+            sucesseses_string = f", Success Messages='{successes}'"
+            messages.append(sucesseses_string)
+
+        if any(self.errors):
+            errors = "; ".join(self.errors)
+            errors_string = f", Error Messages='{errors}'"
+            messages.append(errors_string)
+
+        return "".join(messages)
