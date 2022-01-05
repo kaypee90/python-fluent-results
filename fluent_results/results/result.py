@@ -13,13 +13,24 @@ class Result(ResultBase):
     @classmethod
     def ok(cls, data=None, message=None):
         """
-        Handles successful data
+        Propates data and message for a successful process.
+        
+        params:
+            data (any): data to be returned as part of Result object
+            message (str): success message
+        returns
+            result: an instance of Result class
         """
         return cls(True, data, message)
 
     @classmethod
     def fail(cls, message=None):
         """
-        Handles failure information
+        Propates data and message for a failed process.
+        
+        params:
+            message (str): error message
+        returns
+            result: an instance of Result class
         """
         return cls(False, None, message)
