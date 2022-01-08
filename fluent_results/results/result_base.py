@@ -3,7 +3,6 @@ Author kaypee90
 """
 
 from abc import ABC
-from schema import Schema, SchemaError
 from fluent_results.results.custom_exceptions import (
     MessageNotStringError,
     MessageNotEmptyError,
@@ -159,12 +158,13 @@ class ResultBase(ABC):
         params:
             message (list): messages to be vailidated
         """
-        try:
-            Schema([str]).validate(messages)
-        except SchemaError as schema_error:
+        invalid_messages = filter(lambda x : not isinstance(x, str), messages)
+        number_of_invalid_messages = len(list(invalid_messages))
+
+        if number_of_invalid_messages > 0:
             raise BulkMessagesTypeError(
                 "Messages must be a list of strings"
-            ) from schema_error
+            )
 
     def __str__(self):
         """
