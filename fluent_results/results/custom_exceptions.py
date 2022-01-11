@@ -2,8 +2,12 @@
 Custom defined exceptions
 """
 
+class Error(Exception):
+    """Base class for other exceptions"""
+    pass
 
-class MessageNotStringError(Exception):
+
+class MessageNotStringError(Error):
     """Exception raised for errors when message in not a string.
 
     Attributes:
@@ -15,7 +19,7 @@ class MessageNotStringError(Exception):
         super().__init__(self.message)
 
 
-class MessageNotEmptyError(Exception):
+class MessageNotEmptyError(Error):
     """Exception raised for errors when message is empty or null.
 
     Attributes:
@@ -27,7 +31,7 @@ class MessageNotEmptyError(Exception):
         super().__init__(self.message)
 
 
-class BulkMessagesTypeError(Exception):
+class BulkMessagesTypeError(Error):
     """
     Exception raised for errors when passed list of messages
     is not a list of strings.
