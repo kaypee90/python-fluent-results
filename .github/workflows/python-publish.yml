@@ -30,8 +30,5 @@ jobs:
       run: |
         find . -name '*.py' -exec pylint {} \;
     - name: Test with Pytest
-      run: |
-        pytest --cov=./ --cov-report=xml
-      env:
-        REDIS_URL: redis://localhost:6379/1rt.txt
-        verbose: true
+      run: ./test.sh
+  
