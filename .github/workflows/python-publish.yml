@@ -13,25 +13,26 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.9
+    - name: Set up Python Interpreters
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
+          python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pylint
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
     - name: Lint with pylint
       run: |
         find . -name '*.py' -exec pylint {} \;
     - name: Test with Pytest
-      run: |
-        pytest --cov=./ --cov-report=xml
-      env:
-        REDIS_URL: redis://localhost:6379/1rt.txt
-        verbose: true
+      run: ./test.sh
+  
