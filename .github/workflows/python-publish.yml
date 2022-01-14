@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.9
+    - name: Set up Python Interpreters
       uses: actions/setup-python@v2
       with:
           python-version: ${{ matrix.python-version }}
