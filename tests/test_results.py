@@ -11,22 +11,35 @@ from fluent_results.results.custom_exceptions import (
 )
 
 
-def test_result_ok_with_valid_data():
+@pytest.fixture(
+    scope="module",
+    params=[
+        {"data": "sample data"},
+        {"response": [1, 2, 3]},
+        {"result": {"python": "No Gil"}},
+    ],
+)
+def success_data(request):
+    return request.param
+
+
+def test_result_ok_with_valid_data(success_data):
     Result.ok("Successful One")
-    result = Result.ok({"data": "sample data"}, "Tested successfully")
+    result = Result.ok(success_data, "Tested successfully")
 
     assert len(result.successes) == 1
     assert len(result.errors) == 0
     assert len(result.reasons) == 0
     assert result.successes[0] == "Tested successfully"
-    assert result.value == {"data": "sample data"}
+    assert result.value == success_data
     assert result.is_success
     assert not result.is_failed
 
 
-def test_result_ok_with_invalid_data():
+@pytest.mark.parametrize("message", [45.9, True, {"some": "thing"}, ["patch"]])
+def test_result_ok_with_invalid_data(message):
     with pytest.raises(MessageNotStringError):
-        Result.ok(["Somthing"], 99.8)
+        Result.ok(["Somthing"], message)
 
 
 def test_result_fail_with_valid_data():
@@ -72,8 +85,8 @@ def test_result_base_with_success_using_invalid_data_should_throw_an_error():
         result.with_success("")
 
 
-def test_result_base_with_success_using_valid_data_should_succeed():
-    result = Result.ok({"data": "sample test data"}, "Process occured with Data Two")
+def test_result_base_with_success_using_valid_data_should_succeed(success_data):
+    result = Result.ok(success_data, "Process occured with Data Two")
     result.with_success("The Process succeeded")
     result.with_success("The Process succeeded again")
     output = result.with_success("The Process succeeded again and again")
@@ -90,8 +103,8 @@ def test_result_base_with_reason_using_invalid_data_should_throw_an_error():
         result.with_reason("")
 
 
-def test_result_base_with_reason_using_valid_data_should_succeed():
-    result = Result.ok({"data": "sample test data 1"}, "Process occured with Data 3")
+def test_result_base_with_reason_using_valid_data_should_succeed(success_data):
+    result = Result.ok(success_data, "Process occured with Data 3")
     result.with_reason("With reason one")
     result.with_reason("With reason two")
     output = result.with_reason("With reason three")
@@ -103,14 +116,17 @@ def test_result_base_with_reason_using_valid_data_should_succeed():
     assert isinstance(output, Result)
 
 
-def test_string_representation_of_result_with_no_reasons_should_retun_empty_string():
-    result = Result.ok(
-        {"data": "sample test data one"}, "Process occured with Data THREE"
-    )
+def test_string_representation_of_result_with_no_reasons_should_retun_empty_string(
+    success_data,
+):
+    result = Result.ok(success_data, "Process occured with Data THREE")
 
     assert len(result.reasons) == 0
     assert len(result.successes) == 1
-    assert str(result) == "Result: IsSuccess='True' , Success Messages='Process occured with Data THREE'"
+    assert (
+        str(result)
+        == "Result: IsSuccess='True' , Success Messages='Process occured with Data THREE'"
+    )
 
 
 def test_string_representation_of_result_with_reasons_should_retun_valid_string_format():
@@ -125,17 +141,15 @@ def test_string_representation_of_result_with_reasons_should_retun_valid_string_
     )
 
 
-def test_convert_to_dict_should_return_a_valid_dictionary():
-    result = Result.ok(
-        {"data": "sample test data six"}, "Process occured with Data five"
-    )
+def test_convert_to_dict_should_return_a_valid_dictionary(success_data):
+    result = Result.ok(success_data, "Process occured with Data five")
     result.with_reason("With reason eight")
 
     output = result.convert_to_dict()
 
     assert output == {
         "is_success": True,
-        "value": {"data": "sample test data six"},
+        "value": success_data,
         "successes": ["Process occured with Data five"],
         "errors": [],
         "reasons": ["With reason eight"],
@@ -154,8 +168,8 @@ def test_with_reasons_with_valid_reasons_should_update_result_reasons_list():
     assert result.reasons == ["First reason", "Second reason", "Third reason"]
 
 
-def test_with_reasons_with_invalid_reasons_list_should_throw_an_exception():
-    reasons = [8, 9]
+@pytest.mark.parametrize("reasons", [[True, False], [99.4, 89.8], [{"python": "code"}]])
+def test_with_reasons_with_invalid_reasons_list_should_throw_an_exception(reasons):
     result = Result.fail("Error occured. Try Again")
     result.with_reason("Initial reason")
 
@@ -163,11 +177,11 @@ def test_with_reasons_with_invalid_reasons_list_should_throw_an_exception():
         result.with_reasons(reasons)
 
 
-def test_with_successes_with_valid_messages_should_update_result_success_list():
+def test_with_successes_with_valid_messages_should_update_result_success_list(
+    success_data,
+):
     messages = ["Success reason two", "Success reason three"]
-    result = Result.ok(
-        {"data": "sample test data Five"}, "Process finished with Data Seven"
-    )
+    result = Result.ok(success_data, "Process finished with Data Seven")
     result.with_success("Success reason one")
 
     result.with_successes(messages)
@@ -182,9 +196,11 @@ def test_with_successes_with_valid_messages_should_update_result_success_list():
     ]
 
 
-def test_with_sucesses_with_invalid_messages_list_should_throw_an_exception():
-    reasons = [2, True]
-    result = Result.ok({"data": "sample"}, "Executed successfully")
+@pytest.mark.parametrize("reasons", [[True, False], [99.4, 89.8], [{"python": "code"}]])
+def test_with_sucesses_with_invalid_messages_list_should_throw_an_exception(
+    success_data, reasons
+):
+    result = Result.ok(success_data, "Executed successfully")
     result.with_success("Initial reason")
 
     with pytest.raises(BulkMessagesTypeError):
@@ -208,8 +224,8 @@ def test_with_errors_with_valid_messages_should_update_result_error_list():
     ]
 
 
-def test_with_errors_with_invalid_messages_list_should_throw_an_exception():
-    reasons = [False, True]
+@pytest.mark.parametrize("reasons", [[True, False], [99.4, 89.8], [{"python": "code"}]])
+def test_with_errors_with_invalid_messages_list_should_throw_an_exception(reasons):
     result = Result.fail("Error occured. Contact Admin")
     result.with_error("First Error Message")
 
