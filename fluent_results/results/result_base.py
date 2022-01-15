@@ -158,13 +158,11 @@ class ResultBase(ABC):
         params:
             message (list): messages to be vailidated
         """
-        invalid_messages = filter(lambda x : not isinstance(x, str), messages)
+        invalid_messages = filter(lambda x: not isinstance(x, str), messages)
         number_of_invalid_messages = len(list(invalid_messages))
 
         if number_of_invalid_messages > 0:
-            raise BulkMessagesTypeError(
-                "Messages must be a list of strings"
-            )
+            raise BulkMessagesTypeError("Messages must be a list of strings")
 
     def __str__(self):
         """
