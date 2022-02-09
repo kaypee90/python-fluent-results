@@ -3,6 +3,7 @@ Author kaypee90
 """
 
 from abc import ABC
+from email import message
 from fluent_results.results.custom_exceptions import (
     MessageNotStringError,
     MessageNotEmptyError,
@@ -145,10 +146,10 @@ class ResultBase(ABC):
             check_for_none (bool): validate if message is none or emtpy
         """
         if message and not isinstance(message, str):
-            raise MessageNotStringError("message must be a string")
+            raise MessageNotStringError("message must be a string", message)
 
         if check_for_none and not message:
-            raise MessageNotEmptyError("message must not be empty!")
+            raise MessageNotEmptyError("message must not be empty!", message)
 
     @staticmethod
     def _validate_bulk_messages(messages):
@@ -162,7 +163,7 @@ class ResultBase(ABC):
         number_of_invalid_messages = len(list(invalid_messages))
 
         if number_of_invalid_messages > 0:
-            raise BulkMessagesTypeError("Messages must be a list of strings")
+            raise BulkMessagesTypeError("Messages must be a list of strings", messages)
 
     def __str__(self):
         """
