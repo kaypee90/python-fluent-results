@@ -3,9 +3,6 @@ Custom defined exceptions
 """
 
 
-from ast import arg
-
-
 class Error(Exception):
     """Base class for other exceptions"""
 

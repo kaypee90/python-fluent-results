@@ -3,7 +3,6 @@ Author kaypee90
 """
 
 from abc import ABC
-from email import message
 from fluent_results.results.custom_exceptions import (
     MessageNotStringError,
     MessageNotEmptyError,
