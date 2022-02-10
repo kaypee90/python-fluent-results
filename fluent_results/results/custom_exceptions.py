@@ -16,8 +16,9 @@ class MessageNotStringError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="message must be a string"):
+    def __init__(self, message="message must be a string", *args):
         self.message = message
+        self.args = args
         super().__init__(self.message)
 
 
@@ -28,8 +29,9 @@ class MessageNotEmptyError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="message must not be empty!"):
+    def __init__(self, message="message must not be empty!", *args):
         self.message = message
+        self.args = args
         super().__init__(self.message)
 
 
@@ -42,6 +44,7 @@ class BulkMessagesTypeError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="messages must be a list of strings"):
+    def __init__(self, message="messages must be a list of strings", *args):
         self.message = message
+        self.args = args
         super().__init__(self.message)
