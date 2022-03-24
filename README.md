@@ -74,7 +74,7 @@ r = Result.ok({"data":"Sample data"})
 print(r.convert_to_dict()) # converts result to a dictionary
 ```
 
-* Access response return in Result object
+* Accessing the response returned with Result object
 ```
 from fluent_results.results import Result
 
