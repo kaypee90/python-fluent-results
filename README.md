@@ -8,7 +8,7 @@ Propagate errors and data nicely with a uniform interface in your python project
 
 
 * Install using the command: `pip install pyfluent-results`
-### - How to use fluent results
+### - How to use python fluent results
 
 ==============================
 
