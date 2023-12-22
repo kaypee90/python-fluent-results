@@ -22,7 +22,7 @@ class ResultBase(ABC):
         self.value = data
         self.is_success = is_success
 
-        ResultBase._validate_message(message)
+        self._validate_message(message)
 
         if is_success and message:
             self.successes.append(message)
@@ -47,7 +47,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_message(error_message, True)
+        self._validate_message(error_message, True)
         self.errors.append(error_message)
         return self
 
@@ -61,7 +61,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_bulk_messages(messages)
+        self._validate_bulk_messages(messages)
         self.errors.extend(messages)
         return self
 
@@ -75,7 +75,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_message(success_message, True)
+        self._validate_message(success_message, True)
         self.successes.append(success_message)
         return self
 
@@ -89,7 +89,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_bulk_messages(messages)
+        self._validate_bulk_messages(messages)
         self.successes.extend(messages)
         return self
 
@@ -103,7 +103,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_message(reason, True)
+        self._validate_message(reason, True)
         self.reasons.append(reason)
         return self
 
@@ -117,7 +117,7 @@ class ResultBase(ABC):
         returns
             ResultBase: an instance of result base
         """
-        ResultBase._validate_bulk_messages(reasons)
+        self._validate_bulk_messages(reasons)
         self.reasons.extend(reasons)
         return self
 
