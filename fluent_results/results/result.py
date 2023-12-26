@@ -11,10 +11,10 @@ class Result(ResultBase):
     """
 
     @classmethod
-    def ok(cls, data=None, message=None):
+    def ok(cls, data=None, message=None):  # pylint: disable=C0103
         """
         Propates data and message for a successful process.
-        
+
         params:
             data (any): data to be returned as part of Result object
             message (str): success message
@@ -27,7 +27,7 @@ class Result(ResultBase):
     def fail(cls, message=None):
         """
         Propates data and message for a failed process.
-        
+
         params:
             message (str): error message
         returns

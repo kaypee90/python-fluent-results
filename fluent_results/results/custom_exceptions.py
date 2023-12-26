@@ -4,9 +4,9 @@ Custom defined exceptions
 
 
 class Error(Exception):
-    """Base class for other exceptions"""
-
-    pass
+    """
+    Base class for other exceptions
+    """
 
 
 class MessageNotStringError(Error):
@@ -16,8 +16,8 @@ class MessageNotStringError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="message must be a string", *args):
-        self.message = message
+    def __init__(self, message, *args):
+        self.message = message or "message must be a string"
         self.args = args
         super().__init__(self.message)
 
@@ -29,8 +29,8 @@ class MessageNotEmptyError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="message must not be empty!", *args):
-        self.message = message
+    def __init__(self, message, *args):
+        self.message = message or "message must not be empty!"
         self.args = args
         super().__init__(self.message)
 
@@ -44,7 +44,7 @@ class BulkMessagesTypeError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, message="messages must be a list of strings", *args):
-        self.message = message
+    def __init__(self, message, *args):
+        self.message = message or "messages must be a list of strings"
         self.args = args
         super().__init__(self.message)
