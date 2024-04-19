@@ -3,6 +3,8 @@
 ![App workflow](https://github.com/kaypee90/python-fluent-results/actions/workflows/python-publish.yml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+This repository is for experimental purposes only. 
+The repository contains experimental code on results pattern and it is not for production use.
 
 Propagate errors and data nicely with a uniform interface in your python project
 
@@ -87,4 +89,3 @@ r.errors      # get the list of error messages.
 r.sucesses    # get the list of success messages.
 r.reasons     # get the list of added reasons.
 ```
-
