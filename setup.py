@@ -8,7 +8,7 @@ setuptools.setup(
     url="https://github.com/kaypee90/python-fluent-results",
     author="kaypee90",
     author_email="kaypee90@yahoo.com",
-    install_requires=["schema==0.7.5"],
+    install_requires=["schema==0.7.7"],
     version="0.0.1",
     license="MIT",
     description="Propagate errors and data nicely with a uniform interface in your python project",
